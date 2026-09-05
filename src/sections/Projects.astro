@@ -1,0 +1,26 @@
+---
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { sortedProjects } from '../data/projects';
+---
+
+<Section
+  id="projects"
+  eyebrow="03 — Projects"
+  title="Things I've built"
+  lead="Personal and technical projects. Most of these run on hardware I maintain, which means I also get to deal with them when they break."
+  alt
+>
+  <div class="projects">
+    {sortedProjects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</Section>
+
+<style>
+  .projects {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    align-items: start;
+  }
+</style>

@@ -1,0 +1,255 @@
+---
+import type { Project } from '../types';
+import StatusBadge from './StatusBadge.astro';
+import TagList from './TagList.astro';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const imageSrc = project.image
+  ? `${base.replace(/\/$/, '')}/${project.image.replace(/^\//, '')}`
+  : null;
+
+// Initials chip, shown in place of a screenshot. A card with no image stays
+// compact and content-first rather than reserving a large empty tile.
+const monogram = project.name
+  .replace(/[^A-Za-z ]/g, '')
+  .split(' ')
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((word) => word[0].toUpperCase())
+  .join('');
+---
+
+<article class:list={['card', project.featured && 'card--featured']} data-reveal>
+  {
+    imageSrc && (
+      <div class="card__media">
+        <img
+          src={imageSrc}
+          alt={`Screenshot of ${project.name}`}
+          loading="lazy"
+          decoding="async"
+          width="640"
+          height="360"
+        />
+      </div>
+    )
+  }
+
+  <div class="card__body">
+    <div class="card__meta">
+      <span class="card__category">{project.category}</span>
+      <StatusBadge status={project.status} />
+    </div>
+
+    <div class="card__heading">
+      {!imageSrc && (
+        <span class="card__monogram" aria-hidden="true">
+          {monogram}
+        </span>
+      )}
+      <h3 class="card__title">{project.name}</h3>
+    </div>
+    <p class="card__description">{project.description}</p>
+
+    <TagList items={project.tech} label={`Technologies used in ${project.name}`} />
+
+    {
+      project.needsDetail && (
+        <p class="card__todo">
+          <span class="card__todo-label">Needs detail</span>
+          {project.needsDetail}
+        </p>
+      )
+    }
+
+    <div class="card__links">
+      {
+        project.repoUrl ? (
+          <a class="card__link" href={project.repoUrl} rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38l-.01-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.06-.49.06-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.11.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48l-.01 2.19c0 .21.15.46.55.38A8 8 0 0 0 8 0Z" />
+            </svg>
+            Code
+          </a>
+        ) : (
+          <span class="card__link card__link--muted">Private repo</span>
+        )
+      }
+      {
+        project.liveUrl && (
+          <a class="card__link" href={project.liveUrl} rel="noopener">
+            <svg viewBox="0 0 16 16" aria-hidden="true" class="card__link-arrow">
+              <path d="M4.5 11.5 11.5 4.5M6 4.5h5.5V10" />
+            </svg>
+            Live
+          </a>
+        )
+      }
+    </div>
+  </div>
+</article>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+  }
+
+  /* Featured work gets a hairline accent rule rather than a different size,
+     so the grid stays even. */
+  .card--featured {
+    border-top: 2px solid var(--accent);
+  }
+
+  .card__media {
+    aspect-ratio: 16 / 9;
+    background: var(--surface-2);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .card__heading {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  /* Initials chip: a small nod to the missing screenshot without leaving a
+     large empty tile on the card. */
+  .card__monogram {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    border-radius: 7px;
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.02em;
+  }
+
+  .card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.15rem 1.25rem 1.35rem;
+    flex: 1;
+  }
+
+  .card__meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .card__category {
+    font-family: var(--font-mono);
+    font-size: 0.675rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .card__title {
+    margin: 0;
+  }
+
+  .card__description {
+    color: var(--text-muted);
+    font-size: 0.925rem;
+    margin: 0;
+  }
+
+  .card__todo {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 0.55rem 0.7rem;
+    margin: 0;
+  }
+
+  .card__todo-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.15rem;
+  }
+
+  .card__links {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 0.35rem;
+  }
+
+  .card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .card__link:hover {
+    text-decoration: underline;
+  }
+
+  .card__link--muted {
+    color: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .card__link svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    fill: currentColor;
+  }
+
+  .card__link-arrow {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+</style>

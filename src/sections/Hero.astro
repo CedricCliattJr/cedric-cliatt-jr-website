@@ -1,0 +1,170 @@
+---
+import { site } from '../data/site';
+import { nowItems } from '../data/now';
+
+// Surfaces the first in-flight item as a small "currently" indicator so the
+// hero reflects what's actually happening without duplicating the Now section.
+const currentFocus = nowItems.find((item) => item.status === 'Building') ?? nowItems[0];
+---
+
+<section class="hero" id="top">
+  <div class="container hero__inner">
+    <p class="hero__eyebrow" data-reveal>{site.role}</p>
+
+    <h1 class="hero__title" data-reveal data-reveal-delay="60">
+      I build and run real infrastructure while I learn it.
+    </h1>
+
+    <p class="hero__lead" data-reveal data-reveal-delay="120">
+      I'm {site.name} — studying cloud and network engineering, and putting it
+      into practice on a home lab I actually maintain, small applications I
+      actually use, and operational problems for a real business. Cloud,
+      networking, Linux, automation and the code that ties them together.
+    </p>
+
+    <div class="hero__actions" data-reveal data-reveal-delay="180">
+      <a class="btn btn--primary" href="#projects">See what I've built</a>
+      <a class="btn btn--secondary" href="#about">About me</a>
+      <a class="btn btn--ghost" href="#contact">Get in touch</a>
+    </div>
+
+    {
+      currentFocus && (
+        <p class="hero__current" data-reveal data-reveal-delay="240">
+          <span class="hero__current-dot" aria-hidden="true" />
+          <span class="hero__current-label">Currently</span>
+          {currentFocus.title}
+        </p>
+      )
+    }
+
+    {
+      site.availability && (
+        <p class="hero__availability" data-reveal data-reveal-delay="280">
+          {site.availability}
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5.5rem);
+    overflow: hidden;
+  }
+
+  /* Very faint grid, fading out downward. The single decorative flourish. */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(
+      ellipse 80% 55% at 50% 0%,
+      #000 0%,
+      transparent 78%
+    );
+    mask-image: radial-gradient(
+      ellipse 80% 55% at 50% 0%,
+      #000 0%,
+      transparent 78%
+    );
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .hero__inner {
+    position: relative;
+    display: grid;
+    gap: 1.15rem;
+    justify-items: start;
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid var(--accent-line);
+    border-radius: 999px;
+    padding: 0.25rem 0.7rem;
+    margin: 0;
+  }
+
+  .hero__title {
+    max-width: 19ch;
+    margin: 0.25rem 0 0;
+  }
+
+  .hero__lead {
+    font-size: clamp(1.02rem, 0.98rem + 0.45vw, 1.16rem);
+    color: var(--text-muted);
+    max-width: 58ch;
+    margin: 0;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 0.6rem;
+  }
+
+  .hero__current,
+  .hero__availability {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .hero__current {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border);
+    width: 100%;
+    max-width: 58ch;
+    flex-wrap: wrap;
+  }
+
+  .hero__current-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    animation: hero-pulse 2.4s ease-in-out infinite;
+  }
+
+  .hero__current-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .hero__availability {
+    color: var(--text-faint);
+    font-size: 0.825rem;
+    padding-left: 0.05rem;
+  }
+
+  @keyframes hero-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.3;
+    }
+  }
+</style>

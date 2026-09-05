@@ -1,0 +1,80 @@
+---
+// Light/dark toggle. The initial value is set by the inline script in
+// BaseLayout, so this only handles user-initiated changes.
+---
+
+<button
+  class="theme-toggle"
+  type="button"
+  id="theme-toggle"
+  aria-label="Switch colour theme"
+  title="Switch colour theme"
+>
+  <svg class="theme-toggle__icon theme-toggle__icon--sun" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.2"></circle>
+    <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"></path>
+  </svg>
+  <svg class="theme-toggle__icon theme-toggle__icon--moon" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M20.5 14.3A8.6 8.6 0 0 1 9.7 3.5a8.7 8.7 0 1 0 10.8 10.8Z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.16s ease, border-color 0.16s ease;
+    flex-shrink: 0;
+  }
+
+  .theme-toggle:hover {
+    color: var(--accent);
+    border-color: var(--accent-line);
+  }
+
+  .theme-toggle__icon {
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* Show the icon for the theme you'd switch *to*. */
+  .theme-toggle__icon--sun {
+    display: none;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle__icon--sun {
+    display: block;
+  }
+
+  :global(:root[data-theme='dark']) .theme-toggle__icon--moon {
+    display: none;
+  }
+</style>
+
+<script>
+  const button = document.getElementById('theme-toggle');
+  const root = document.documentElement;
+
+  button?.addEventListener('click', () => {
+    const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch (e) {
+      // Storage unavailable (private mode). The choice just won't persist.
+    }
+  });
+</script>

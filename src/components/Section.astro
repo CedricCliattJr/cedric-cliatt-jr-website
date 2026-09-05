@@ -1,0 +1,42 @@
+---
+interface Props {
+  id: string;
+  /** Monospace label above the heading. */
+  eyebrow: string;
+  title: string;
+  /** Optional supporting line under the heading. */
+  lead?: string;
+  /** Renders the section on the alternate background. */
+  alt?: boolean;
+}
+
+const { id, eyebrow, title, lead, alt = false } = Astro.props;
+const headingId = `${id}-heading`;
+---
+
+<section
+  id={id}
+  class:list={['section', alt && 'section--alt']}
+  aria-labelledby={headingId}
+>
+  <div class="container">
+    <header class="section__head" data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 id={headingId}>{title}</h2>
+      {lead && <p class="lead section__lead">{lead}</p>}
+    </header>
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section__head {
+    display: grid;
+    gap: 0.75rem;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .section__lead {
+    margin-top: 0.15rem;
+  }
+</style>

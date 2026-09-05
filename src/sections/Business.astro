@@ -1,0 +1,167 @@
+---
+import Section from '../components/Section.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import TagList from '../components/TagList.astro';
+import { businesses } from '../data/business';
+---
+
+<Section
+  id="business"
+  eyebrow="05 — Applied Work"
+  title="Technology for real operations"
+  lead="Work where the constraints came from a business rather than from me. Different problem shape than a personal project — the requirements arrive from how people actually work, and the system has to survive a busy shift."
+  alt
+>
+  <div class="business">
+    {
+      businesses.map((item, index) => (
+        <article class="business__card" data-reveal data-reveal-delay={index * 60}>
+          <div class="business__bar" aria-hidden="true" />
+
+          <div class="business__content">
+            <header class="business__head">
+              <div>
+                <h3>{item.name}</h3>
+                <p class="business__role">{item.role}</p>
+              </div>
+              <StatusBadge status={item.status} />
+            </header>
+
+            <p class="business__summary">{item.summary}</p>
+
+            <div class="business__focus">
+              <h4>Areas of work</h4>
+              <ul>
+                {item.focusAreas.map((area) => (
+                  <li>
+                    <span class="business__marker" aria-hidden="true" />
+                    {area}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <TagList items={item.tech} label={`Technologies used at ${item.name}`} />
+
+            {item.needsDetail && (
+              <p class="business__todo">
+                <span class="business__todo-label">Needs detail</span>
+                {item.needsDetail}
+              </p>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</Section>
+
+<style>
+  .business {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .business__card {
+    display: flex;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  /* Accent spine — visually separates this section from the project grid. */
+  .business__bar {
+    width: 4px;
+    flex-shrink: 0;
+    background: var(--accent);
+    opacity: 0.75;
+  }
+
+  .business__content {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.4rem clamp(1.25rem, 3vw, 1.9rem);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .business__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .business__head h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .business__role {
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  .business__summary {
+    color: var(--text-muted);
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  .business__focus h4 {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+
+  .business__focus ul {
+    display: grid;
+    gap: 0.4rem 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+    margin: 0;
+  }
+
+  .business__focus li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+
+  .business__marker {
+    width: 4px;
+    height: 4px;
+    border-radius: 1px;
+    background: var(--accent);
+    flex-shrink: 0;
+    transform: rotate(45deg);
+  }
+
+  .business__todo {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius);
+    padding: 0.6rem 0.75rem;
+    margin: 0;
+  }
+
+  .business__todo-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.15rem;
+  }
+</style>
