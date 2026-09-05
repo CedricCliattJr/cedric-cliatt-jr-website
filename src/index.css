@@ -1,0 +1,78 @@
+:root {
+  font-family:
+    Inter,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #1f2937;
+  background: #f5f7fb;
+  --surface: #ffffff;
+  --chip: #f8fafc;
+  --text: #1f2937;
+  --heading: #0f172a;
+  --muted: #4b5563;
+  --brand: #1d4ed8;
+  --border: #dbe3ef;
+}
+
+:root[data-theme='dark'] {
+  color: #e5e7eb;
+  background: #0f172a;
+  --surface: #111827;
+  --chip: #1f2937;
+  --text: #e5e7eb;
+  --heading: #f8fafc;
+  --muted: #93a3b8;
+  --brand: #93c5fd;
+  --border: #2b3748;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  color: var(--text);
+  background: radial-gradient(circle at top right, #dbeafe 0, transparent 50%),
+    var(--surface);
+}
+
+:root[data-theme='dark'] body {
+  background: radial-gradient(circle at top right, #1e3a8a 0, transparent 55%),
+    #0b1221;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--heading);
+  line-height: 1.2;
+}
+
+p {
+  margin-top: 0.3rem;
+  margin-bottom: 0.85rem;
+  max-width: 75ch;
+}
+
+a {
+  color: var(--brand);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
