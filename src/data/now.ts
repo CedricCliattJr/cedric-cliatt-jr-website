@@ -7,7 +7,7 @@ import type { NowItem } from '../types';
  * updating most often — treat it like a changelog for yourself. Reorder freely;
  * it renders in the order listed.
  */
-export const nowUpdated = 'TODO: set this to the date you last edited this file';
+export const nowUpdated = 'September 2026';
 
 export const nowItems: NowItem[] = [
   {

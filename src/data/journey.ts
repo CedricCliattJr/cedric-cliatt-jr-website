@@ -3,24 +3,26 @@ import type { JourneyMilestone } from '../types';
 /**
  * Professional development timeline.
  *
- * `period` is free text — '2024', 'In progress' and 'Ongoing' all work. Order
- * the array the way you want it read; nothing is sorted automatically.
+ * `period` is free text — 'Early on', '2024', 'In progress' and 'Ongoing' all
+ * work equally well. Relative labels are used below so the timeline doesn't go
+ * stale; swap in real years whenever you want. Order the array the way you want
+ * it read; nothing is sorted automatically.
  */
 export const journey: JourneyMilestone[] = [
   {
-    period: 'TODO: add year',
+    period: 'Early on',
     title: 'Started programming',
     detail:
       'First real exposure to writing code — Java, C++ and C#, and the fundamentals underneath them: variables, control flow, functions, and how a program is actually structured.',
   },
   {
-    period: 'TODO: add year',
+    period: 'Along the way',
     title: 'Built the first home lab',
     detail:
       'A spare machine turned into a server. Learning Linux by having to keep something running rather than by following along with a lesson.',
   },
   {
-    period: 'TODO: add year',
+    period: 'Recently',
     title: 'Technology work for a local business',
     detail:
       'Applied the same skills to a real operation — inventory and workflow problems at The Library on Carson, where the constraints came from how a business actually runs.',

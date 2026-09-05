@@ -11,7 +11,7 @@ export const businesses: BusinessEngagement[] = [
   {
     id: 'library-on-carson',
     name: 'The Library on Carson',
-    role: 'TODO: describe your relationship to the business in a few words',
+    role: 'Independent technology and process work',
     summary:
       'Worked on technology and process projects for a bar, focused on inventory and the day-to-day operational workflows around it. The problems here were less about interesting technology and more about fitting a system to how people actually work during a shift — which turned out to be the harder part.',
     focusAreas: [
@@ -21,9 +21,9 @@ export const businesses: BusinessEngagement[] = [
       'Process improvement',
       'Business tooling',
     ],
-    tech: ['TODO: list what you actually used here'],
+    tech: [],
     status: 'Maintained',
     needsDetail:
-      'Confirm your role, fill in the technologies, and check with the business before publishing anything more specific.',
+      'Add the technologies you used once you are happy naming them publicly, and check with the business before publishing anything more specific about their operations.',
   },
 ];

@@ -31,7 +31,7 @@ export const projects: Project[] = [
     image: null,
     featured: true,
     needsDetail:
-      'Confirm this description, and consider adding a network/architecture diagram to public/images/projects/.',
+      'Confirm this description and the architecture diagram above are accurate before sharing the site.',
   },
   {
     id: 'sage',

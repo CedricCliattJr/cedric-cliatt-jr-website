@@ -20,6 +20,12 @@ const canonical = Astro.site
 const base = import.meta.env.BASE_URL;
 const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
 
+// Social preview image. Must be an absolute URL — relative paths are ignored by
+// most link unfurlers.
+const ogImage = Astro.site
+  ? new URL(asset('og-image.png'), Astro.site).href
+  : asset('og-image.png');
+
 // Minimal structured data. Only fields we can state truthfully.
 const personSchema = {
   '@context': 'https://schema.org',
@@ -43,12 +49,18 @@ const personSchema = {
     <meta name="generator" content={Astro.generator} />
 
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} — ${site.role}`} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <!--
       Theme is applied before first paint so there is no light-mode flash on a

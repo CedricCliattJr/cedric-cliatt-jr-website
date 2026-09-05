@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 
 /*
  * Deployment target: GitHub Pages.
@@ -23,4 +24,6 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
+  // Generates sitemap-index.xml at build time, referenced from robots.txt.
+  integrations: [sitemap()],
 });

@@ -9,7 +9,6 @@ export const site = {
   /** Meta description. Keep it under ~160 characters. */
   description:
     'Cloud and network engineering student building real infrastructure, self-hosted services and practical business tools.',
-  location: 'TODO: add your city/state, or delete this line',
   /** Shown in the hero as a small availability line. Set to null to hide. */
   availability: 'Open to internships and entry-level cloud/IT roles',
 } as const;

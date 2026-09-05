@@ -19,6 +19,12 @@ to one file — you never have to touch the layout.
 It supports light and dark themes with a toggle in the header, follows the
 system preference by default, and remembers the choice.
 
+The projects section leads with a conceptual architecture diagram of the home
+lab, drawn as inline SVG in `src/components/HomeLabDiagram.astro`. It's
+deliberately generic — no hostnames, addresses, ports or file paths — and it
+uses the same theme tokens as everything else, so it reads correctly in both
+themes.
+
 ## Content model
 
 Everything the site renders is described by types in `src/types.ts` and filled
@@ -97,6 +103,10 @@ instead.
 **A résumé download** — put the PDF in `public/`, then fill in the Résumé row in
 `contactLinks` in `src/data/site.ts` with `href: '/your-resume.pdf'`.
 
+**A social preview image** — `public/og-image.png` is referenced from the
+`og:image` and `twitter:image` tags in `BaseLayout.astro`. Replace the file at
+the same path (1200×630) to change what shows when the link is shared.
+
 **A second page** — create `src/pages/<name>.astro`, use `BaseLayout`, and
 import whichever section components you want. The sections in `src/sections/`
 are self-contained, so moving one onto its own route doesn't require rewriting
@@ -106,8 +116,9 @@ instead of an anchor.
 ## File structure
 
 ```
-astro.config.mjs           Site URL, base path, build settings
-public/                    Files served as-is: favicon, robots.txt, images, PDFs
+astro.config.mjs           Site URL, base path, sitemap, build settings
+LICENSE                    MIT
+public/                    Served as-is: favicon, og-image, robots.txt, images
 src/
   types.ts                 Types for every kind of content on the site
   data/                    The actual content — this is what you edit
@@ -120,7 +131,21 @@ src/
 .github/workflows/deploy.yml  Build and publish on push to main
 ```
 
-## Still to fill in
+## SEO and sharing
 
-See `TODO.md` for the list of placeholders that need real information before
-this is ready to share.
+`BaseLayout.astro` sets the canonical URL, meta description, Open Graph and
+Twitter card tags, and `Person` structured data. `@astrojs/sitemap` generates
+`sitemap-index.xml` at build time, and `public/robots.txt` points at it.
+
+If you change the site's URL, update the sitemap line in `robots.txt` to match —
+that one is a literal string and isn't generated from the config.
+
+## Still to check
+
+`TODO.md` has the short list. The contact links are placeholders by choice, and
+a few entries were drafted from existing notes and are worth reading before you
+share the link.
+
+## License
+
+MIT — see `LICENSE`.
