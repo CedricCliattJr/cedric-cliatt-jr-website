@@ -1,0 +1,68 @@
+---
+import Section from '../components/Section.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import HomeLabDiagram from '../components/HomeLabDiagram.astro';
+import { sortedProjects } from '../data/projects';
+---
+
+<Section
+  id="projects"
+  eyebrow="03 — Projects"
+  title="Things I've built"
+  lead="Personal and technical projects. Most of these run on hardware I maintain, which means I also get to deal with them when they break."
+  alt
+>
+  <div class="spotlight" data-reveal>
+    <div class="spotlight__intro">
+      <p class="spotlight__label">Home lab architecture</p>
+      <p class="spotlight__text">
+        The home lab is where most of my Linux, networking and service-management
+        practice happens. Everything reaches it over an encrypted private network
+        rather than an open port, and storage is split by purpose so a rebuild
+        never puts the data at risk.
+      </p>
+    </div>
+    <HomeLabDiagram />
+  </div>
+
+  <div class="projects">
+    {sortedProjects.map((project) => <ProjectCard project={project} />)}
+  </div>
+</Section>
+
+<style>
+  .spotlight {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: clamp(1.25rem, 3vw, 1.9rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .spotlight__intro {
+    margin-bottom: 1.5rem;
+  }
+
+  .spotlight__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 0.5rem;
+  }
+
+  .spotlight__text {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    max-width: var(--measure);
+    margin: 0;
+  }
+
+  .projects {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    align-items: start;
+  }
+</style>

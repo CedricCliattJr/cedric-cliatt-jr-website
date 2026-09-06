@@ -1,0 +1,68 @@
+---
+import type { Status } from '../types';
+
+interface Props {
+  status: Status;
+}
+
+const { status } = Astro.props;
+
+// Maps a status to its token. Adding a new status means adding it to the
+// Status union in types.ts and a colour token in global.css.
+const tokens: Record<Status, string> = {
+  Learning: 'var(--status-learning)',
+  Building: 'var(--status-building)',
+  Experimenting: 'var(--status-experimenting)',
+  Maintained: 'var(--status-maintained)',
+  Completed: 'var(--status-completed)',
+  Planned: 'var(--status-planned)',
+};
+
+const color = tokens[status];
+const pulses = status === 'Building' || status === 'Experimenting';
+---
+
+<span class="status" style={`--status-color: ${color}`}>
+  <span class:list={['status__dot', pulses && 'status__dot--live']} aria-hidden="true"></span>
+  {status}
+</span>
+
+<style>
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.675rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--status-color);
+    border: 1px solid color-mix(in srgb, var(--status-color) 32%, transparent);
+    background: color-mix(in srgb, var(--status-color) 8%, transparent);
+    border-radius: 999px;
+    padding: 0.18rem 0.55rem 0.18rem 0.45rem;
+    white-space: nowrap;
+  }
+
+  .status__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--status-color);
+    flex-shrink: 0;
+  }
+
+  .status__dot--live {
+    animation: status-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes status-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.35;
+    }
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import Section from '../components/Section.astro';
+import { journey } from '../data/journey';
+---
+
+<Section
+  id="journey"
+  eyebrow="06 — Journey"
+  title="How I got here, and where it's going"
+  lead="Not a long résumé — a record of how the skills actually accumulated, and what I'm aiming at next."
+>
+  <ol class="timeline">
+    {
+      journey.map((milestone, index) => (
+        <li
+          class:list={['timeline__item', milestone.current && 'timeline__item--current']}
+          data-reveal
+          data-reveal-delay={index * 55}
+        >
+          <span class="timeline__marker" aria-hidden="true" />
+          <div class="timeline__content">
+            <p class="timeline__period">{milestone.period}</p>
+            <h3>{milestone.title}</h3>
+            <p class="timeline__detail">{milestone.detail}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</Section>
+
+<style>
+  .timeline {
+    position: relative;
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .timeline__item {
+    position: relative;
+    padding-left: 2.15rem;
+    padding-bottom: 1.85rem;
+  }
+
+  /* The connecting line, drawn per-item so the last one can stop short. */
+  .timeline__item::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1.15rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--border);
+  }
+
+  .timeline__item:last-child {
+    padding-bottom: 0;
+  }
+
+  .timeline__item:last-child::before {
+    display: none;
+  }
+
+  .timeline__marker {
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid var(--border-strong);
+  }
+
+  .timeline__item--current .timeline__marker {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft);
+  }
+
+  .timeline__period {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 0.25rem;
+  }
+
+  .timeline__item--current .timeline__period {
+    color: var(--accent);
+  }
+
+  .timeline__content h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.075rem;
+  }
+
+  .timeline__detail {
+    color: var(--text-muted);
+    font-size: 0.925rem;
+    margin: 0;
+    max-width: var(--measure);
+  }
+</style>

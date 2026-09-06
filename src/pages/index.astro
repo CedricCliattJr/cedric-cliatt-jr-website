@@ -1,0 +1,28 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../sections/Hero.astro';
+import About from '../sections/About.astro';
+import Skills from '../sections/Skills.astro';
+import Projects from '../sections/Projects.astro';
+import Now from '../sections/Now.astro';
+import Business from '../sections/Business.astro';
+import Journey from '../sections/Journey.astro';
+import Contact from '../sections/Contact.astro';
+
+/*
+ * Single page for now. Each section is a self-contained component, so splitting
+ * one out into its own route later is a matter of creating src/pages/<name>.astro
+ * and moving the import — no rewriting required.
+ */
+---
+
+<BaseLayout>
+  <Hero />
+  <About />
+  <Skills />
+  <Projects />
+  <Now />
+  <Business />
+  <Journey />
+  <Contact />
+</BaseLayout>

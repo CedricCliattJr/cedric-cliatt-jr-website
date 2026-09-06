@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cedriccliattjr.github.io/cedric-cliatt-jr-website/sitemap-index.xml

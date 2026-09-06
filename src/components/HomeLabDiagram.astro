@@ -1,0 +1,221 @@
+---
+/*
+ * Conceptual architecture of the home lab.
+ *
+ * Deliberately generic: no hostnames, IP addresses, ports, service names or
+ * file paths. It shows how the pieces relate, which is the part worth
+ * explaining, without publishing anything about the actual deployment.
+ *
+ * Colours come from the theme tokens, so it reads correctly in light and dark.
+ * The viewBox is fixed and the wrapper scrolls horizontally on narrow screens
+ * rather than shrinking the labels below a legible size.
+ */
+---
+
+<figure class="diagram">
+  <div class="diagram__scroll" tabindex="0" role="group" aria-labelledby="diagram-caption">
+    <svg
+      class="diagram__svg"
+      viewBox="0 0 900 356"
+      role="img"
+      aria-label="Architecture diagram. Personal devices connect over an encrypted private overlay network to a host firewall, which is the only way in — nothing is exposed directly to the public internet. Behind the firewall an Ubuntu server runs two tiers: network services including DNS filtering, and self-hosted Python web applications running as managed background services. Both sit above a storage layer split across four separate volumes for the operating system, applications, media and backups."
+    >
+      <!-- ── Devices ──────────────────────────────────────────────── -->
+      <g class="node">
+        <rect x="18" y="120" width="140" height="86" rx="10" />
+        <text class="node__title" x="88" y="152">My devices</text>
+        <text class="node__sub" x="88" y="173">Laptop, phone,</text>
+        <text class="node__sub" x="88" y="189">desktop</text>
+      </g>
+
+      <path class="link" d="M158 163 H212" marker-end="url(#arrow)" />
+
+      <!-- ── Private overlay network ──────────────────────────────── -->
+      <g class="node node--accent">
+        <rect x="214" y="112" width="156" height="102" rx="10" />
+        <text class="node__title" x="292" y="146">Private overlay</text>
+        <text class="node__title" x="292" y="164">network</text>
+        <text class="node__sub" x="292" y="185">Encrypted, device-</text>
+        <text class="node__sub" x="292" y="201">to-device</text>
+      </g>
+
+      <path class="link" d="M370 163 H424" marker-end="url(#arrow)" />
+
+      <!-- ── Firewall ─────────────────────────────────────────────── -->
+      <g class="node node--accent">
+        <rect x="426" y="120" width="108" height="86" rx="10" />
+        <text class="node__title" x="480" y="152">Host</text>
+        <text class="node__title" x="480" y="170">firewall</text>
+        <text class="node__sub" x="480" y="191">Default deny</text>
+      </g>
+
+      <!-- ── Server boundary ──────────────────────────────────────── -->
+      <rect class="boundary" x="566" y="22" width="316" height="312" rx="14" />
+      <text class="boundary__label" x="586" y="46">UBUNTU SERVER</text>
+
+      <!-- firewall → the two service tiers -->
+      <path class="link" d="M534 163 H552 V92 H596" marker-end="url(#arrow)" />
+      <path class="link" d="M534 163 H552 V180 H596" marker-end="url(#arrow)" />
+
+      <!-- Network services -->
+      <g class="node">
+        <rect x="598" y="62" width="262" height="60" rx="9" />
+        <text class="node__title node__title--left" x="616" y="87">Network services</text>
+        <text class="node__sub node__sub--left" x="616" y="107">Network-wide DNS filtering</text>
+      </g>
+
+      <!-- Applications -->
+      <g class="node">
+        <rect x="598" y="142" width="262" height="76" rx="9" />
+        <text class="node__title node__title--left" x="616" y="167">Self-hosted applications</text>
+        <text class="node__sub node__sub--left" x="616" y="187">Python web apps, each run as a</text>
+        <text class="node__sub node__sub--left" x="616" y="203">managed background service</text>
+      </g>
+
+      <path class="link" d="M729 218 V234" marker-end="url(#arrow)" />
+
+      <!-- Storage -->
+      <g class="node">
+        <rect x="598" y="236" width="262" height="82" rx="9" />
+        <text class="node__title node__title--left" x="616" y="259">Storage</text>
+        <g class="volumes">
+          <rect x="616" y="268" width="56" height="21" rx="5" />
+          <text x="644" y="283">OS</text>
+          <rect x="678" y="268" width="56" height="21" rx="5" />
+          <text x="706" y="283">Apps</text>
+          <rect x="740" y="268" width="56" height="21" rx="5" />
+          <text x="768" y="283">Media</text>
+          <rect x="802" y="268" width="56" height="21" rx="5" />
+          <text x="830" y="283">Backups</text>
+        </g>
+        <text class="node__sub node__sub--left" x="616" y="307">Four volumes, separated by purpose</text>
+      </g>
+
+      <!-- ── Note ─────────────────────────────────────────────────── -->
+      <text class="note" x="18" y="248">Nothing is exposed directly</text>
+      <text class="note" x="18" y="265">to the public internet — the</text>
+      <text class="note" x="18" y="282">overlay network is the only</text>
+      <text class="note" x="18" y="299">way in.</text>
+
+      <defs>
+        <marker
+          id="arrow"
+          viewBox="0 0 10 10"
+          refX="9"
+          refY="5"
+          markerWidth="5.5"
+          markerHeight="5.5"
+          orient="auto-start-reverse"
+        >
+          <path class="arrowhead" d="M0 1.5 L9 5 L0 8.5 z" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <figcaption class="diagram__caption" id="diagram-caption">
+    How the home lab fits together. Conceptual — deployment specifics are
+    deliberately left out.
+  </figcaption>
+</figure>
+
+<style>
+  .diagram {
+    margin: 0;
+  }
+
+  .diagram__scroll {
+    overflow-x: auto;
+    border-radius: var(--radius);
+  }
+
+  .diagram__svg {
+    display: block;
+    width: 100%;
+    min-width: 620px;
+    height: auto;
+  }
+
+  .node rect {
+    fill: var(--surface-2);
+    stroke: var(--border-strong);
+    stroke-width: 1;
+  }
+
+  .node--accent rect {
+    fill: var(--accent-soft);
+    stroke: var(--accent-line);
+  }
+
+  .node__title {
+    fill: var(--text);
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    text-anchor: middle;
+  }
+
+  .node__sub {
+    fill: var(--text-muted);
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    text-anchor: middle;
+  }
+
+  /* Must come after both base rules above — equal specificity, so source
+     order decides which text-anchor wins. */
+  .node__title--left,
+  .node__sub--left {
+    text-anchor: start;
+  }
+
+  .boundary {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1;
+    stroke-dasharray: 5 4;
+  }
+
+  .boundary__label {
+    fill: var(--text-faint);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+  }
+
+  .link {
+    fill: none;
+    stroke: var(--border-strong);
+    stroke-width: 1.4;
+  }
+
+  .arrowhead {
+    fill: var(--border-strong);
+  }
+
+  .volumes rect {
+    fill: var(--surface);
+    stroke: var(--border);
+    stroke-width: 1;
+  }
+
+  .volumes text {
+    fill: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-anchor: middle;
+  }
+
+  .note {
+    fill: var(--text-faint);
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+  }
+
+  .diagram__caption {
+    margin-top: 0.9rem;
+    font-size: 0.825rem;
+    color: var(--text-faint);
+    max-width: var(--measure);
+  }
+</style>

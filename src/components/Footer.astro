@@ -1,0 +1,45 @@
+---
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <p class="site-footer__line">
+      &copy; {year} {site.name}
+    </p>
+    <p class="site-footer__line site-footer__colophon">
+      Built with Astro. Designed and developed by me, with AI assistance.
+      <a href="#top">Back to top</a>
+    </p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    padding-block: 2rem;
+    margin-top: auto;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .site-footer__line {
+    font-size: 0.825rem;
+    color: var(--text-faint);
+    margin: 0;
+  }
+
+  .site-footer__colophon {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

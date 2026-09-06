@@ -1,0 +1,157 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = site.title, description = site.description } = Astro.props;
+
+// Astro.site is set in astro.config.mjs; guard so the build still works if it
+// is ever removed.
+const canonical = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : Astro.url.pathname;
+
+const base = import.meta.env.BASE_URL;
+const asset = (path: string) => `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`;
+
+// Social preview image. Must be an absolute URL — relative paths are ignored by
+// most link unfurlers.
+const ogImage = Astro.site
+  ? new URL(asset('og-image.png'), Astro.site).href
+  : asset('og-image.png');
+
+// Minimal structured data. Only fields we can state truthfully.
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  description: site.description,
+  url: canonical,
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={asset('favicon.svg')} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name} — ${site.role}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!--
+      Theme is applied before first paint so there is no light-mode flash on a
+      dark-mode load. This has to be inline and blocking.
+    -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var stored = null;
+        try {
+          stored = localStorage.getItem('theme');
+        } catch (e) {
+          /* private browsing — fall through to the system preference */
+        }
+        var prefersDark =
+          window.matchMedia &&
+          window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.dataset.theme = stored || (prefersDark ? 'dark' : 'light');
+        // Lets CSS hold reveal animations back only when JS can run them.
+        root.classList.add('js');
+      })();
+    </script>
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      /*
+       * Reveal elements as they enter the viewport.
+       *
+       * Deliberately not an IntersectionObserver: fast scrolling (a jump to an
+       * anchor, an End keypress) can skip past elements without the observer
+       * ever reporting them as intersecting, leaving them invisible. A position
+       * check on scroll reveals anything at or above the fold, so nothing can
+       * be stranded.
+       */
+      const targets = Array.from(
+        document.querySelectorAll<HTMLElement>('[data-reveal]'),
+      );
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+
+      if (reduceMotion) {
+        targets.forEach((el) => el.classList.add('is-revealed'));
+      } else {
+        let pending = targets.slice();
+        let queued = false;
+
+        const check = () => {
+          queued = false;
+          const fold = window.innerHeight - 40;
+          const remaining: HTMLElement[] = [];
+
+          for (const el of pending) {
+            if (el.getBoundingClientRect().top < fold) {
+              const delay = Number(el.dataset.revealDelay ?? 0);
+              if (delay > 0) {
+                window.setTimeout(() => el.classList.add('is-revealed'), delay);
+              } else {
+                el.classList.add('is-revealed');
+              }
+            } else {
+              remaining.push(el);
+            }
+          }
+
+          pending = remaining;
+          if (pending.length === 0) {
+            window.removeEventListener('scroll', schedule);
+            window.removeEventListener('resize', schedule);
+          }
+        };
+
+        const schedule = () => {
+          if (queued) return;
+          queued = true;
+          window.requestAnimationFrame(check);
+        };
+
+        window.addEventListener('scroll', schedule, { passive: true });
+        window.addEventListener('resize', schedule);
+        check();
+      }
+    </script>
+  </body>
+</html>

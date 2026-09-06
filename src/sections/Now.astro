@@ -1,0 +1,81 @@
+---
+import Section from '../components/Section.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { nowItems, nowUpdated } from '../data/now';
+---
+
+<Section
+  id="now"
+  eyebrow="04 — Now"
+  title="What I'm working on"
+  lead="A running snapshot of what has my attention right now, rather than a finished list. It changes often."
+>
+  <ul class="now">
+    {
+      nowItems.map((item, index) => (
+        <li class="now__item" data-reveal data-reveal-delay={index * 45}>
+          <div class="now__head">
+            <h3>{item.title}</h3>
+            <StatusBadge status={item.status} />
+          </div>
+          <p>{item.detail}</p>
+        </li>
+      ))
+    }
+  </ul>
+
+  <p class="now__updated" data-reveal>Last updated: {nowUpdated}</p>
+</Section>
+
+<style>
+  .now {
+    display: grid;
+    gap: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .now__item {
+    padding: 1.05rem 1.3rem;
+    border-bottom: 1px solid var(--border);
+    transition: background-color 0.18s ease;
+  }
+
+  .now__item:last-child {
+    border-bottom: 0;
+  }
+
+  .now__item:hover {
+    background: var(--surface-2);
+  }
+
+  .now__head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.3rem;
+  }
+
+  .now__head h3 {
+    margin: 0;
+  }
+
+  .now__item p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  .now__updated {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    margin-top: 1rem;
+  }
+</style>
