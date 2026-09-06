@@ -23,6 +23,12 @@ import { businesses } from '../data/business';
               <div>
                 <h3>{item.name}</h3>
                 <p class="business__role">{item.role}</p>
+                {item.url && (
+                  <a class="business__link" href={item.url.href}>
+                    {item.url.label}
+                    <span aria-hidden="true">&nearr;</span>
+                  </a>
+                )}
               </div>
               <StatusBadge status={item.status} />
             </header>
@@ -103,6 +109,22 @@ import { businesses } from '../data/business';
     font-size: 0.85rem;
     color: var(--text-faint);
     margin: 0;
+  }
+
+  .business__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+  }
+
+  .business__link:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .business__summary {
