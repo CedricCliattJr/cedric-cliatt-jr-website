@@ -74,6 +74,12 @@ export interface BusinessEngagement {
   focusAreas: string[];
   tech: string[];
   status: Status;
+  /**
+   * An optional public link for the engagement — a site you can actually
+   * visit. Omit it when there's nothing to point at; a dead or private link
+   * is worse than none.
+   */
+  url?: { label: string; href: string };
   needsDetail?: string;
 }
 

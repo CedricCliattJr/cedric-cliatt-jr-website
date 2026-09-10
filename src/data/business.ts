@@ -9,6 +9,25 @@ import type { BusinessEngagement } from '../types';
  */
 export const businesses: BusinessEngagement[] = [
   {
+    id: 'solar-grove-assistance',
+    name: 'Solar Grove Assistance',
+    role: 'My own business — founder and the person doing the work',
+    summary:
+      'Practical AI and admin help for small businesses and solo professionals: setting AI tools up around the work a business already does, closing the gaps where information gets retyped between systems, ongoing back-office support, and small custom tools where nothing off the shelf fits. It grew out of the same observation as most of the work below — the hard part is rarely the technology, it is fitting a system to how people already work.',
+    focusAreas: [
+      'AI workflow setup',
+      'Automation and integrations',
+      'Admin and back-office support',
+      'Custom small tools',
+    ],
+    tech: ['Astro', 'TypeScript', 'Python', 'Flask', 'SQLite', 'Linux'],
+    status: 'Building',
+    url: {
+      label: 'solargroveassistance',
+      href: 'https://cedriccliattjr.github.io/sg-assistance/',
+    },
+  },
+  {
     id: 'library-on-carson',
     name: 'The Library on Carson',
     role: 'Independent technology and process work',
