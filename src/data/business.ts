@@ -23,8 +23,8 @@ export const businesses: BusinessEngagement[] = [
     tech: ['Astro', 'TypeScript', 'Python', 'Flask', 'SQLite', 'Linux'],
     status: 'Building',
     url: {
-      label: 'solargroveassistance',
-      href: 'https://cedriccliattjr.github.io/sg-assistance/',
+      label: 'sg-assistance.com',
+      href: 'https://sg-assistance.com',
     },
   },
   {
