@@ -1,7 +1,7 @@
 {
-  "$schema": "npm run build && wrangler deploy"
-  "name": "cedric-cliatt-jr-website"
-  "main": "dist/_worker.js/index.js"
+  "$schema": "npm run build && wrangler deploy",
+  "name": "cedric-cliatt-jr-website",
+  "main": "dist/_worker.js/index.js",
   "compatibility_date": "2026-09-15",
   "compatibility_flag": [
     "global_fetch_strictly_public"
